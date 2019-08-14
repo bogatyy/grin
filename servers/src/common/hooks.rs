@@ -24,6 +24,7 @@ use crate::common::types::{ServerConfig, WebHooksConfig};
 use crate::core::core;
 use crate::core::core::hash::Hashed;
 use crate::p2p::types::PeerAddr;
+use crate::util::secp::pedersen::Commitment;
 use futures::future::Future;
 use hyper::client::HttpConnector;
 use hyper::header::HeaderValue;
@@ -83,12 +84,15 @@ struct EventLogger;
 
 impl NetEvents for EventLogger {
 	fn on_transaction_received(&self, tx: &core::Transaction) {
-		debug!(
-			"Received tx {}, [in/out/kern: {}/{}/{}] going to process.",
+		warn!(
+			"Received tx {}, {}/{}/{} Inputs {:?} Outputs {:?} Kernels {:?}",
 			tx.hash(),
 			tx.inputs().len(),
 			tx.outputs().len(),
 			tx.kernels().len(),
+			tx.inputs().into_iter().map(|x| x.commit).collect::<Vec<Commitment>>(),
+			tx.outputs().into_iter().map(|x| x.commit).collect::<Vec<Commitment>>(),
+			tx.kernels().into_iter().map(|x| x.excess).collect::<Vec<Commitment>>()
 		);
 	}
 
