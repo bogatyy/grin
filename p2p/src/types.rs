@@ -49,10 +49,10 @@ pub const MAX_LOCATORS: u32 = 20;
 const BAN_WINDOW: i64 = 10800;
 
 /// The max peer count
-const PEER_MAX_COUNT: u32 = 125;
+const PEER_MAX_COUNT: u32 = 325;
 
 /// min preferred peer count
-const PEER_MIN_PREFERRED_COUNT: u32 = 8;
+const PEER_MIN_PREFERRED_COUNT: u32 = 300;
 
 #[derive(Debug)]
 pub enum Error {
